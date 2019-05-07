@@ -1,0 +1,17 @@
+github.com/antlr/antlr4 v0.0.0-20190503160947-7c334b114c20 h1:xJvHLql+mVa03cQ+eRL0VBCXZdy7A+pubqJkPZOz7iM=
+github.com/antlr/antlr4 v0.0.0-20190503160947-7c334b114c20/go.mod h1:T7PbCXFs94rrTttyxjbyT5+/1V8T2TYDejxUfHJjw1Y=
+github.com/k0kubun/pp v3.0.1+incompatible h1:3tqvf7QgUnZ5tXO6pNAZlrvHgl6DvifjDrd9g2S9Z40=
+github.com/k0kubun/pp v3.0.1+incompatible/go.mod h1:GWse8YhT0p8pT4ir3ZgBbfZild3tgzSScAn6HmfYukg=
+github.com/mattn/go-colorable v0.1.1 h1:G1f5SKeVxmagw/IyvzvtZE4Gybcc4Tr1tf7I8z0XgOg=
+github.com/mattn/go-colorable v0.1.1/go.mod h1:FuOcm+DKB9mbwrcAfNl7/TZVBZ6rcnceauSikq3lYCQ=
+github.com/mattn/go-isatty v0.0.5 h1:tHXDdz1cpzGaovsTB+TVB8q90WEokoVmfMqoVcrLUgw=
+github.com/mattn/go-isatty v0.0.5/go.mod h1:Iq45c/XA43vh69/j3iqttzPXn0bhXyGjM0Hdxcsrc5s=
+github.com/tzmfreedom/goland v0.1.2 h1:sxS4GP1rlJRXlHsIqiKg10oxG4cNvhRcaalozZCW2QA=
+github.com/tzmfreedom/goland v0.1.2/go.mod h1:tWiB/3ze9VwGCQb96YduQxxPULaNiV2m491j+TJSG0E=
+github.com/tzmfreedom/land v0.1.2 h1:K0VJAcBah8WC2JFruUqYZd6cL34LU4lN89hWClQFX7c=
+github.com/tzmfreedom/land v0.1.2/go.mod h1:IpoCyTsCwPlWhnt3BQPlix9+uIDw/uuqVIb5Zyxuip0=
+github.com/tzmfreedom/land v0.1.3-0.20190506135524-091996eaf00c h1:Go1g9YYaTxVzz8Xe2tfkbeeitEGdoP7iKKFmZULxFbE=
+github.com/tzmfreedom/land v0.1.3-0.20190506135524-091996eaf00c/go.mod h1:IpoCyTsCwPlWhnt3BQPlix9+uIDw/uuqVIb5Zyxuip0=
+github.com/tzmfreedom/land v0.1.3-0.20190507143331-851602e78632 h1:HDS9V6VJa+F6LKfOeZ2Jm9yuRJY/0tcdVHCmOHvs6Hk=
+github.com/tzmfreedom/land v0.1.3-0.20190507143331-851602e78632/go.mod h1:IpoCyTsCwPlWhnt3BQPlix9+uIDw/uuqVIb5Zyxuip0=
+golang.org/x/sys v0.0.0-20190222072716-a9d3bda3a223/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
