@@ -13,6 +13,14 @@ run: format
 run/format:
 	@go run . format -f example.cls
 
+.PHONY: docker/build
+docker/build:
+	docker build -t apex2java .
+
+.PHONY: docker
+docker: docker/build
+	docker run --rm -v $(PWD):/root -it apex2java /bin/bash
+
 .PHONY: test
 test: format
 	@go test ./...
