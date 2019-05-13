@@ -17,7 +17,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	debug(node)
 	fmt.Println(Generate(node))
 }
 

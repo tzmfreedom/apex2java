@@ -571,31 +571,23 @@ func (v *Generator) VisitSoql(n *ast.Soql) (interface{}, error) {
 	where := ""
 	fields := make([]string, len(n.SelectFields))
 	from := ""
-	v.AddIndent(func() {
-		v.AddIndent(func() {
-			for i, f := range n.SelectFields {
-				switch val := f.(type) {
-				case *ast.SelectField:
-					fields[i] = v.withIndent(strings.Join(val.Value, "."))
-				case *ast.SoqlFunction:
-					fields[i] = v.withIndent(val.Name + "()")
-				}
-			}
+	for i, f := range n.SelectFields {
+		switch val := f.(type) {
+		case *ast.SelectField:
+			fields[i] = strings.Join(val.Value, ".")
+		case *ast.SoqlFunction:
+			fields[i] = val.Name + "()"
+		}
+	}
 
-			from = v.withIndent(n.FromObject)
+	from = n.FromObject
 
-			if n.Where != nil {
-				where = v.withIndent(v.createWhere(n.Where))
-			}
-		})
-	})
+	if n.Where != nil {
+		where = v.createWhere(n.Where)
+	}
 
-	indent := ""
-	v.AddIndent(func() {
-		indent = v.withIndent("")
-	})
 	if where != "" {
-		where = "\n" + indent + "WHERE\n" + where
+		where = " WHERE " + where
 	}
 	orderBy := ""
 	groupBy := ""
@@ -605,27 +597,16 @@ func (v *Generator) VisitSoql(n *ast.Soql) (interface{}, error) {
 		if err != nil {
 			return nil, err
 		}
-		v.AddIndent(func() {
-			v.AddIndent(func() {
-				limit = "\n" + indent + "LIMIT\n" + v.withIndent(i.(string))
-			})
-		})
+		limit = " LIMIT " + i.(string)
 	}
 
-	return fmt.Sprintf(`[
-%sSELECT
-%s
-%sFROM
-%s%s%s%s%s%s`,
-		indent,
-		strings.Join(fields, ",\n"),
-		indent,
+	return fmt.Sprintf(`Database.execute("SELECT %s FROM %s%s%s%s%s")`,
+		strings.Join(fields, ","),
 		from,
 		where,
 		orderBy,
 		groupBy,
 		limit,
-		"\n"+v.withIndent("]"),
 	), nil
 }
 
@@ -923,6 +904,12 @@ func (v *Generator) VisitSetCreator(n *ast.SetCreator) (interface{}, error) {
 
 func (v *Generator) VisitName(n *ast.Name) (interface{}, error) {
 	return strings.Join(n.Value, "."), nil
+}
+
+func (v *Generator) VisitInstanceofOperator(n *ast.InstanceofOperator) (interface{}, error) {
+	exp, _ := n.Expression.Accept(v)
+	typeRef, _ := n.TypeRef.Accept(v)
+	return fmt.Sprintf("%s instanceof %s", exp, typeRef), nil
 }
 
 func (v *Generator) VisitConstructorDeclaration(n *ast.ConstructorDeclaration) (interface{}, error) {
