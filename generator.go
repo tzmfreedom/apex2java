@@ -600,7 +600,8 @@ func (v *Generator) VisitSoql(n *ast.Soql) (interface{}, error) {
 		limit = " LIMIT " + i.(string)
 	}
 
-	return fmt.Sprintf(`Database.execute("SELECT %s FROM %s%s%s%s%s")`,
+	return fmt.Sprintf(`(List<%s>)Database.execute("SELECT %s FROM %s%s%s%s%s")`,
+		from,
 		strings.Join(fields, ","),
 		from,
 		where,
@@ -643,7 +644,7 @@ func (v *Generator) VisitSosl(n *ast.Sosl) (interface{}, error) {
 }
 
 func (v *Generator) VisitStringLiteral(n *ast.StringLiteral) (interface{}, error) {
-	return "'" + n.Value + "'", nil
+	return "\"" + n.Value + "\"", nil
 }
 
 func (v *Generator) VisitSwitch(n *ast.Switch) (interface{}, error) {
@@ -851,10 +852,15 @@ func (v *Generator) VisitType(n *ast.TypeRef) (interface{}, error) {
 	if len(params) != 0 {
 		paramString = fmt.Sprintf("<%s>", strings.Join(params, ", "))
 	}
+	appendString := ""
+	for i := 0; i < n.Dimmension; i++ {
+		appendString += "[]"
+	}
 	return fmt.Sprintf(
-		"%s%s",
+		"%s%s%s",
 		strings.Join(n.Name, "."),
 		paramString,
+		appendString,
 	), nil
 }
 
@@ -865,7 +871,12 @@ func (v *Generator) VisitBlock(n *ast.Block) (interface{}, error) {
 		if err != nil {
 			return nil, err
 		}
-		statements[i] = v.withIndent(r.(string)) + ";"
+		statements[i] = v.withIndent(r.(string))
+		switch s.(type) {
+		case *ast.For, *ast.If, *ast.Switch:
+		default:
+			statements[i] += ";"
+		}
 	}
 	return strings.Join(statements, "\n"), nil
 }
@@ -933,14 +944,6 @@ func (v *Generator) VisitConstructorDeclaration(n *ast.ConstructorDeclaration) (
 		}
 		modifiers[i] = r.(string)
 	}
-	returnType := "void"
-	if n.ReturnType != nil {
-		r, err := n.ReturnType.Accept(v)
-		if err != nil {
-			return nil, err
-		}
-		returnType = r.(string)
-	}
 	parameters := make([]string, len(n.Parameters))
 	for i, p := range n.Parameters {
 		r, err := p.Accept(v)
@@ -961,11 +964,10 @@ func (v *Generator) VisitConstructorDeclaration(n *ast.ConstructorDeclaration) (
 		block = fmt.Sprintf("%s\n", block)
 	}
 	return fmt.Sprintf(
-		`%s%s %s %s (%s) {
+		`%s%s %s (%s) {
 %s%s`,
 		annotationStr,
 		v.withIndent(strings.Join(modifiers, " ")),
-		returnType,
 		n.Name,
 		strings.Join(parameters, ", "),
 		block,

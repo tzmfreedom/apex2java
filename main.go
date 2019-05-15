@@ -17,6 +17,15 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	resolver := NewImportTypeResolver()
+	_, err = resolver.Resolve(node)
+	if err != nil {
+		panic(err)
+	}
+	for importClass, _ := range resolver.importClasses {
+		fmt.Printf("import %s;\n", importClass)
+	}
+	fmt.Println()
 	fmt.Println(Generate(node))
 }
 
