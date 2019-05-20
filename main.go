@@ -23,6 +23,9 @@ func main() {
 		panic(err)
 	}
 	for importClass, _ := range resolver.importClasses {
+		if importClass == "" {
+			continue
+		}
 		fmt.Printf("import %s;\n", importClass)
 	}
 	fmt.Println()

@@ -1,4 +1,4 @@
-package com.freedom_man;
+package com.freedom_man.system;
 
 public class System {
     public static void debug(Object o) {

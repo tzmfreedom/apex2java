@@ -3,14 +3,14 @@
 	@javac $*.java
 
 .PHONY: run
-run: classes
-	@java Hoge fooo
+run: build
+	@java -classpath . Hoge fooo
 
 .PHONY: build
 build: classes
+	@javac -classpath . Hoge.java
 
-
-CLASSES = $(shell ls *.java com/freedom_man/*.java)
+CLASSES = $(shell ls com/freedom_man/system/*.java)
 
 classes: $(CLASSES:.java=.class)
 

@@ -6,11 +6,11 @@ import (
 )
 
 var ImportClasses = map[string]string{
-	"system":   "com.freedom_man.System",
-	"database": "com.freedom_man.Database",
-	"list":     "com.freedom_man.List",
-	"account":  "com.freedom_man.Account",
-	"sobject":  "com.freedom_man.SObject",
+	"system": "com.freedom_man.system.System",
+	"database": "com.freedom_man.system.Database",
+	"list":     "com.freedom_man.system.List",
+	"account":  "com.freedom_man.system.Account",
+	"sobject":  "com.freedom_man.system.SObject",
 }
 
 type ImportTypeResolver struct {
@@ -160,10 +160,10 @@ func (v *ImportTypeResolver) VisitThrow(n *ast.Throw) (interface{}, error) {
 }
 
 func (v *ImportTypeResolver) VisitSoql(n *ast.Soql) (interface{}, error) {
-	if class, ok := ImportClasses[strings.ToLower(n.FromObject)]; ok {
-		v.importClasses[class] = struct{}{}
+	if packageName, ok := ImportClasses[strings.ToLower(n.FromObject)]; ok {
+		v.importClasses[packageName] = struct{}{}
 	}
-	v.importClasses[ImportClasses["database"]] = struct{}{}
+	v.importClasses["database"] = struct{}{}
 	return nil, nil
 }
 
@@ -225,8 +225,8 @@ func (v *ImportTypeResolver) VisitFieldAccess(n *ast.FieldAccess) (interface{}, 
 
 func (v *ImportTypeResolver) VisitType(n *ast.TypeRef) (interface{}, error) {
 	// TODO: impl
-	if class, ok := ImportClasses[strings.ToLower(n.Name[0])]; ok {
-		v.importClasses[class] = struct{}{}
+	if packageName, ok := ImportClasses[strings.ToLower(n.Name[0])]; ok {
+		v.importClasses[packageName] = struct{}{}
 	}
 	for _, p := range n.Parameters {
 		p.Accept(v)
@@ -274,8 +274,8 @@ func (v *ImportTypeResolver) VisitSetCreator(n *ast.SetCreator) (interface{}, er
 }
 
 func (v *ImportTypeResolver) VisitName(n *ast.Name) (interface{}, error) {
-	if class, ok := ImportClasses[strings.ToLower(n.Value[0])]; ok {
-		v.importClasses[class] = struct{}{}
+	if packageName, ok := ImportClasses[strings.ToLower(n.Value[0])]; ok {
+		v.importClasses[packageName] = struct{}{}
 	}
 	return ast.VisitName(v, n)
 }
