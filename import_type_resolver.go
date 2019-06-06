@@ -6,7 +6,7 @@ import (
 )
 
 var ImportClasses = map[string]string{
-	"system": "com.freedom_man.system.System",
+	"system":   "com.freedom_man.system.System",
 	"database": "com.freedom_man.system.Database",
 	"list":     "com.freedom_man.system.List",
 	"account":  "com.freedom_man.system.Account",
